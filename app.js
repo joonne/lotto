@@ -1,7 +1,7 @@
-const Tesseract = require('tesseract.js');
+const tesseract = require('node-tesseract');
 const {
   checkLotto,
-  checkEuroJackpot
+  checkEuroJackpot,
 } = require('./gameService');
 
 const ROW_END = 'PP';
@@ -11,9 +11,21 @@ const rowIdentifiers = [
   'O.', 'P.', 'Q.', 'R.', 'S.', 'T.',
 ];
 
-const readCoupon = () => Tesseract.recognize('./eurojackpot.jpg')
-  .progress((p) => { console.log('progress', p); })
-  .then(result => result.text);
+const readCoupon = () => {
+  const options = {
+    psm: 6,
+  };
+
+  return new Promise((resolve, reject) => {
+    tesseract.process('./lotto.jpg', options, (err, text) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(text);
+      }
+    });
+  });
+};
 
 
 const parseDraws = (text) => {
@@ -31,15 +43,18 @@ const parseDraws = (text) => {
       }, []);
   });
 
-  // console.log(numbers);
+  console.log(numbers);
 
-  return numbers;
+  return Promise.resolve(numbers);
 
   // checkLotto(numbers).then(res => console.log(res));
   // checkEuroJackpot(numbers).then(res => console.log(res));
 };
 
-readCoupon().then(parseDraws);
+readCoupon()
+  .then(parseDraws)
+  .then(checkLotto)
+  .then(res => console.log(res));
 
 module.exports = {
   parseDraws,
