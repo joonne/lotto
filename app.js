@@ -6,19 +6,17 @@ const {
 
 const ROW_END = 'PP';
 const rowIdentifiers = [
-  'A.', 'B.', 'C.', 'D.', 'E.', 'F', 'G.',
+  'A.', 'B.', 'C.', 'D.', 'E.', 'F.', 'G.',
   'H.', 'I.', 'J.', 'K.', 'L.', 'M.', 'N.',
   'O.', 'P.', 'Q.', 'R.', 'S.', 'T.',
 ];
 
 const readCoupon = () => Tesseract.recognize('./eurojackpot.jpg')
   .progress((p) => { console.log('progress', p); })
-  .then(result => result);
+  .then(result => result.text);
 
 
-const parseDraws = (result) => {
-  const text = result.text;
-
+const parseDraws = (text) => {
   const numbers = rowIdentifiers.map((identifier) => {
     const start = text.indexOf(identifier);
     const end = text.indexOf(ROW_END, start);
@@ -33,10 +31,16 @@ const parseDraws = (result) => {
       }, []);
   });
 
-  console.log(numbers);
+  // console.log(numbers);
+
+  return numbers;
 
   // checkLotto(numbers).then(res => console.log(res));
-  checkEuroJackpot(numbers).then(res => console.log(res));
+  // checkEuroJackpot(numbers).then(res => console.log(res));
 };
 
 readCoupon().then(parseDraws);
+
+module.exports = {
+  parseDraws,
+};
