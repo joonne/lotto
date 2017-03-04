@@ -1,0 +1,27 @@
+<html>
+<head>
+  <title></title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+  <script>
+    document.ontouchmove = e => e.preventDefault();
+  </script>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="page-header">
+      <p class="header-text"><b>Tapahtuman nimi</b></p>
+    </div>
+    <p style="text-align:center;">Ota kuva ja lähetä se valkokankaalle!</p>
+    <div class="row">
+      <div class="col-xs-12">
+        <form method="post" enctype="multipart/form-data" action="http://127.0.0.1:10010/api/images">
+          <input id="image" type="file" accept="image/*" name="image" onchange="this.form.submit();">
+        </form>
+        <div id="button" onclick="document.getElementById('image').click();"><img width="40px" height="40px" src="cam.png"></img> Kosketa kuvataksesi</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

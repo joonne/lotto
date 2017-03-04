@@ -4,7 +4,7 @@ const expect = chai.expect;
 
 const {
   parseDraws,
-} = require('../app');
+} = require('../../../app/services/parser');
 
 describe('app', () => {
   describe('parseDraws', () => {
